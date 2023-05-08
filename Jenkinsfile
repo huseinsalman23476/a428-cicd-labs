@@ -6,10 +6,14 @@ node {
         stage('Test') { 
             sh './jenkins/scripts/test.sh' 
         }
-        stage('Deliver') {
+        stage('Manual Approval') {
+            input message: 'Lanjutkan ke tahap Deploy? (Click "Proceed" or "Abort")'
+        }
+        stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
-            input message: 'Finished using the web site? (Click "Proceed" to continue)'
             sh './jenkins/scripts/kill.sh'
+            sleep(time: 1, unit: "MINUTES")
+            echo "Eksekusi pipeline sukses"
         }
     }
 }
